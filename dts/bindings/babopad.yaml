@@ -23,15 +23,12 @@ properties:
     required: true
   x-invert:
     type: boolean
-    default: false
     required: true
   y-invert:
     type: boolean
-    default: false
     required: true
   xy-swap:
     type: boolean
-    default: false
     required: true
   evt-type:
     type: int
