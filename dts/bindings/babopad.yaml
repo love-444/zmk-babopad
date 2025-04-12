@@ -22,15 +22,15 @@ properties:
     default: 1000
     required: true
   x-invert:
-    type: bool
+    type: boolean
     default: false
     required: true
   y-invert:
-    type: bool
+    type: boolean
     default: false
     required: true
   xy-swap:
-    type: bool
+    type: boolean
     default: false
     required: true
   evt-type:
