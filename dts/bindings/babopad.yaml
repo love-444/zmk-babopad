@@ -30,9 +30,9 @@ properties:
   evt-type:
     type: int
     required: true
-  input-code_x:
+  input-code-x:
     type: int
     required: true
-  input-code_y:
+  input-code-y:
     type: int
     required: true
