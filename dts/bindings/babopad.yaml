@@ -1,0 +1,44 @@
+# Copyright (c) 2022 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+description: |
+  Input driver for ADC io channel
+
+compatible: "zmk,babopad"
+
+properties:
+  sampling-hz:
+    type: int
+    default: 100
+  adc-channels:
+    type: array
+    default: [0, 5, 7]
+    required: true
+  pwm-channels:
+    type: array
+    default: [0, 1, 2]
+    required: true
+  dpi:
+    type: int
+    default: 1000
+    required: true
+  x-invert:
+    type: bool
+    default: false
+    required: true
+  y-invert:
+    type: bool
+    default: false
+    required: true
+  xy-swap:
+    type: bool
+    default: false
+    required: true
+  evt-type:
+    type: int
+    required: true
+  input-code_x:
+    type: int
+    required: true
+  input-code_y:
+    type: int
+    required: true
