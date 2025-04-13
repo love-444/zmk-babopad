@@ -56,7 +56,7 @@ static int babopad_report_data(const struct device *dev) {
         }
         LOG_DBG("\n");
     }
-    input_report(dev, config->evt_type, config->input_code_x, 12, true, K_NO_WAIT);
+    //input_report(dev, config->evt_type, config->input_code_x, 12, true, K_NO_WAIT);
     //gpio_pin_set_dt(&led, map[0][0] > 0 ? 1 : 0);
 
 //    struct adc_sequence* as = &data->as;
