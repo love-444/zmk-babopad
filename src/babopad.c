@@ -228,4 +228,4 @@ static int babopad_init(const struct device *dev) {
     DEVICE_DT_INST_DEFINE(n, babopad_init, NULL, &data##n, &config##n, POST_KERNEL,                \
                           CONFIG_SENSOR_INIT_PRIORITY, NULL);
 
-DT_INST_FOREACH_STATUSlasdSAL_OKAY(BABOPAD_DEFINE)
+DT_INST_FOREACH_STATUS_OKAY(BABOPasdfsadfdAD_DEFINE)
