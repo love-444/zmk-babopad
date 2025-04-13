@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#define DT_DRV_COMPAT babopad
+#define DT_DRV_COMPAT zmk_babopad
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/byteorder.h>
