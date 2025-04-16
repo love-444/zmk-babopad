@@ -56,6 +56,10 @@ static int babopad_report_data(const struct device *dev) {
         }
         LOG_DBG("\n");
     }
+
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_set_dt(&led, 1);
+
     //input_report(dev, config->evt_type, config->input_code_x, 12, true, K_NO_WAIT);
     //gpio_pin_set_dt(&led, map[0][0] > 0 ? 1 : 0);
 
@@ -209,10 +213,6 @@ static int babopad_init(const struct device *dev) {
     data->dev = dev;
     k_work_init_delayable(&data->init_work, babopad_async_init);
     k_work_schedule(&data->init_work, K_MSEC(1));
-
-    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_set_dt(&led, 1);
-    k_msleep(1000);
 
     return err;
 }
