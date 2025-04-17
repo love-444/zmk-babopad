@@ -180,7 +180,7 @@ static void babopad_async_init(struct k_work *work) {
 
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
-        struct nrf_saadc_channel_config_t config = {
+        struct nrf_saadc_channel_config_t cfg = {
             .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
             .resistor_n = NRF_SAADC_RESISTOR_ENABLED,
             .gain = NRF_SAADC_GAIN4,
@@ -192,7 +192,7 @@ static void babopad_async_init(struct k_work *work) {
             .pin_n = NRF_SAADC_INPUT_DISABLED,
         };
         sequence.channels |= BIT(config->adc_channels[i]);
-        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &config);
+        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
         nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
     }
     // init pwm
