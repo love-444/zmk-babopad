@@ -34,6 +34,8 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
+
+
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
     const struct babopad_config *config = dev->config;
@@ -177,18 +179,20 @@ static void babopad_async_init(struct k_work *work) {
 
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
-        struct adc_channel_cfg channel_cfg = {
-            .gain = ADC_GAIN_1_6,
-            .reference = ADC_REF_INTERNAL,
-            .acquisition_time = ADC_ACQ_TIME_DEFAULT,
-            .channel_id = config->adc_channels[i],
-            .input_positive = config->adc_channels[i],
+        nrf_saadc_channel_config_t config = {
+            .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
+            .resistor_n = NRF_SAADC_RESISTOR_ENABLED,
+            .gain = NRF_SAADC_GAIN4,
+            .reference = NRF_SAADC_REFERENCE_INTERNAL,
+            .acq_time = NRF_SAADC_ACQTIME_10US,
+            .mode = NRF_SAADC_MODE_SINGLE_ENDED,
+            .burst = NRF_SAADC_BURST_DISABLED,
+            .pin_p = config->adc_channels[i],
+            .pin_n = NRF_SAADC_INPUT_DISABLED,
         };
         sequence.channels |= BIT(config->adc_channels[i]);
-        int err = adc_channel_setup(adc, &channel_cfg);
-        if (err < 0) {
-            LOG_ERR("AIN%u setup returned %d", i, err);
-        }
+        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &config);
+        nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
     }
     // init pwm
 
