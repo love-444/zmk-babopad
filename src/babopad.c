@@ -18,6 +18,7 @@ LOG_MODULE_REGISTER(BABOPAD, 3);
 
 #include "babopad.h"
 #include <zephyr/dt-bindings/adc/nrf-adc.h>
+#include <nrfx_adc.h>
 
 #define ADC_NODE DT_ALIAS(adc0)
 static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
