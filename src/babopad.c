@@ -7,7 +7,6 @@
 #define DT_DRV_COMPAT zmk_babopad
 
 #define ADC_CONTEXT_USES_KERNEL_TIMER
-#include "adc_context.h"
 #include <nrfx_adc.h>
 #include <zephyr/dt-bindings/adc/nrf-adc.h>
 
