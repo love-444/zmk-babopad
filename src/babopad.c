@@ -19,19 +19,6 @@ LOG_MODULE_REGISTER(BABOPAD, 3);
 
 #include "babopad.h"
 
-typedef struct
-{
-    nrf_saadc_resistor_t  resistor_p;
-    nrf_saadc_resistor_t  resistor_n;
-    nrf_saadc_gain_t      gain;
-    nrf_saadc_reference_t reference;
-    nrf_saadc_acqtime_t   acq_time;
-    nrf_saadc_mode_t      mode;
-    nrf_saadc_input_t     pin_p;
-    nrf_saadc_input_t     pin_n;
-} nrf_saadc_channel_config_t;
-
-
 #define ADC_NODE DT_ALIAS(adc0)
 static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
 #define LED0_NODE DT_ALIAS(led0)
