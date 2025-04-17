@@ -5,7 +5,6 @@
  */
 
 #define DT_DRV_COMPAT zmk_babopad
-#include <nrf_saadc.h>
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/byteorder.h>
