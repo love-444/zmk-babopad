@@ -5,10 +5,6 @@
  */
 
 #define DT_DRV_COMPAT zmk_babopad
-#define ADC_INTENSET_END_Msk SAADC_INTENSET_END_Msk
-#define ADC_CONTEXT_USES_KERNEL_TIMER
-#include <nrfx_adc.h>
-#include <zephyr/dt-bindings/adc/nrf-adc.h>
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/byteorder.h>
@@ -184,7 +180,7 @@ static void babopad_async_init(struct k_work *work) {
 
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
-        nrf_saadc_channel_config_t config = {
+        struct nrf_saadc_channel_config_t config = {
             .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
             .resistor_n = NRF_SAADC_RESISTOR_ENABLED,
             .gain = NRF_SAADC_GAIN4,
