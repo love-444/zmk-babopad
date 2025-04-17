@@ -12,7 +12,7 @@
 //#include <zmk/keymap.h>
 #include <stdlib.h> //for abs()
 #include <zephyr/sys/util.h> // for CLAMP
-
+#include <haly/nrfy_saadc.h>
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(BABOPAD, 3);
 
