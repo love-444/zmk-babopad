@@ -181,8 +181,8 @@ static void babopad_async_init(struct k_work *work) {
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
         nrf_saadc_channel_config_t cfg = {
-            .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
-            .resistor_n = NRF_SAADC_RESISTOR_ENABLED,
+            .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
+            .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
             .gain = NRF_SAADC_GAIN4,
             .reference = NRF_SAADC_REFERENCE_INTERNAL,
             .acq_time = NRF_SAADC_ACQTIME_10US,
