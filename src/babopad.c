@@ -207,7 +207,7 @@ static void babopad_async_init(struct k_work *work) {
                         10, NULL);
 
     k_timer_init(&data->sampling_timer, sampling_timer_handler, NULL);
-    k_timer_start(&data->sampling_timer, 0, MSEC(1));
+    k_timer_start(&data->sampling_timer, K_NO_WAIT, K_MSEC(1));
 }
 
 static int babopad_init(const struct device *dev) {
