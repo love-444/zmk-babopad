@@ -189,9 +189,7 @@ static void babopad_async_init(struct k_work *work) {
             .acq_time = NRF_SAADC_ACQTIME_10US,
             .mode = NRF_SAADC_MODE_SINGLE_ENDED,
             .burst = NRF_SAADC_BURST_DISABLED,
-            .pin_p = config->adc_channels[i],
-            .pin_n = NRF_SAADC_INPUT_DISABLED,
-        };
+    };
         sequence.channels |= BIT(config->adc_channels[i]);
         adc_nrfs_channel_setup(dev, &_pl);
         nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
