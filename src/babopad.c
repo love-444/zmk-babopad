@@ -5,7 +5,7 @@
  */
 
 #define DT_DRV_COMPAT zmk_babopad
-
+#define ADC_INTENSET_END_Msk SAADC_INTENSET_END_Msk
 #define ADC_CONTEXT_USES_KERNEL_TIMER
 #include <nrfx_adc.h>
 #include <zephyr/dt-bindings/adc/nrf-adc.h>
