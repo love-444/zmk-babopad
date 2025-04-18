@@ -35,7 +35,7 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-
+static int a = 0;
 
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
@@ -60,94 +60,10 @@ static int babopad_report_data(const struct device *dev) {
         LOG_DBG("\n");
     }
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_set_dt(&led, 1);
-
+    gpio_pin_set_dt(&led, a / 50);
+    a++;
+    if (a == 100) a = 0;
     input_report(dev, config->evt_type, config->input_code_x, 100, true, K_NO_WAIT);
-
-
-    //input_report(dev, config->evt_type, config->input_code_x, 12, true, K_NO_WAIT);
-    //gpio_pin_set_dt(&led, map[0][0] > 0 ? 1 : 0);
-
-//    struct adc_sequence* as = &data->as;
-//
-//    for (uint8_t i = 0; i < config->io_channels_len; i++) {
-//        struct analog_input_io_channel ch_cfg = (struct analog_input_io_channel)config->io_channels[i];
-//        const struct device* adc = ch_cfg.adc_channel.dev;
-//
-//        if (i == 0) {
-//            int err = adc_read(adc, as);
-//            if (err < 0) {
-//                LOG_ERR("AIN%u read returned %d", i, err);
-//                return err;
-//            }
-//        }
-//
-//        int32_t raw = data->as_buff[i];
-//        int32_t mv = raw;
-//        adc_raw_to_millivolts(adc_ref_internal(adc), ADC_GAIN_1_6, as->resolution, &mv);
-//
-//        int16_t v = mv - ch_cfg.mv_mid;
-//        int16_t dz = ch_cfg.mv_deadzone;
-//        if (dz) {
-//            if (v > 0) {
-//                if (v < dz) v = 0; else v -= dz;
-//            }
-//            if (v < 0) {
-//                if (v > -dz) v = 0; else v += dz;
-//            }
-//        }
-//        uint16_t mm = ch_cfg.mv_min_max;
-//        if (mm) {
-//            if (v > 0 && v > mm) v = mm;
-//            if (v < 0 && v < -mm) v = -mm;
-//        }
-//
-//        if (ch_cfg.invert) v *= -1;
-//        v = (int16_t)((v * ch_cfg.scale_multiplier) / ch_cfg.scale_divisor);
-//
-//        if (ch_cfg.report_on_change_only) {
-//            // track raw value to compare until next report interval
-//            data->delta[i] = v;
-//        }
-//        else {
-//            // accumulate delta until report in next iteration
-//            int32_t delta = data->delta[i];
-//            int32_t dv = delta + v;
-//            data->delta[i] = dv;
-//        }
-//    }
-//
-//    // First read is setup as calibration
-//    as->calibrate = false;
-//
-//    if (!data->actived) {
-//        return 0;
-//    }
-//
-//    int8_t idx_to_sync = -1;
-//    for (uint8_t i = config->io_channels_len - 1; i >= 0; i--) {
-//        int32_t dv = data->delta[i];
-//        int32_t pv = data->prev[i];
-//        if (dv != pv) {
-//            idx_to_sync = i;
-//            break;
-//        }
-//    }
-//
-//    for (uint8_t i = 0; i < config->io_channels_len; i++) {
-//        struct analog_input_io_channel ch_cfg = (struct analog_input_io_channel)config->io_channels[i];
-//        // LOG_DBG("AIN%u get delta AGAIN", i);
-//        int32_t dv = data->delta[i];
-//        int32_t pv = data->prev[i];
-//        if (dv != pv) {
-//            data->delta[i] = 0;
-//            if (ch_cfg.report_on_change_only) {
-//                data->prev[i] = dv;
-//            }
-//
-//            
-//        }
-//    }
     return 0;
 }
 
