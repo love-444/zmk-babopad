@@ -126,13 +126,13 @@ static void babopad_async_init(struct k_work *work) {
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
 
     k_work_init(&data->sampling_work, sampling_work_handler);
+    k_work_queue_start(&babopad_work_q, babopad_q_stack, K_THREAD_STACK_SIZEOF(babopad_q_stack), 3, NULL);
     k_timer_init(&data->sampling_timer, sampling_timer_handler, NULL);
-    k_timer_start(&data->sampling_timer, K_MSEC(10), K_MSEC(10));
 }
 
 static int babopad_init(const struct device *dev) {
     struct babopad_data *data = dev->data;
-    const struct babopad_config *config = dev->config;
+    //const struct babopad_config *config = dev->config;
     int err = 0;
 
     data->dev = dev;
