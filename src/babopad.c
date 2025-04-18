@@ -218,7 +218,7 @@ static int babopad_init(const struct device *dev) {
     data->dev = dev;
     k_work_init_delayable(&data->init_work, babopad_async_init);
     k_work_schedule(&data->init_work, K_MSEC(1));
-    input_report(dev, config.evt_type, config.input_code_x, 12, true, K_NO_WAIT);
+    input_report(dev, config->evt_type, config->input_code_x, 12, true, K_NO_WAIT);
     return err;
 }
 
