@@ -115,6 +115,7 @@ static void babopad_async_init(struct k_work *work) {
     //        .burst = NRF_SAADC_BURST_DISABLED,
     //    };
     //    sequence.channels |= BIT(config->adc_channels[i]);
+    //    this weird thing is for enabling internal adc resistors(nrfx driver), not supported by zephyr driver
     //    adc_channel_setup(adc, &_pl);
     //    nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
     //    nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
