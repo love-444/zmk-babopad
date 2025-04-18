@@ -45,20 +45,20 @@ static int babopad_report_data(const struct device *dev) {
         return -EBUSY;
     }
 
-    for (size_t c = 0; c < config->pwm_channels_size; c++)
-    {
-        int err = adc_read(adc, &sequence);        
-        for (size_t r = 0; r < config->adc_channels_size; r++)
-        {
-            map[c][r] = 0;
-            for (size_t i = 0; i < 4; i++)
-            {
-                map[c][r] += adc_reading[i][r];
-            }
-            LOG_DBG("%d ", map[c][r]);
-        }
-        LOG_DBG("\n");
-    }
+    //for (size_t c = 0; c < config->pwm_channels_size; c++)
+    //{
+    //    int err = adc_read(adc, &sequence);        
+    //    for (size_t r = 0; r < config->adc_channels_size; r++)
+    //    {
+    //        map[c][r] = 0;
+    //        for (size_t i = 0; i < 4; i++)
+    //        {
+    //            map[c][r] += adc_reading[i][r];
+    //        }
+    //        LOG_DBG("%d ", map[c][r]);
+    //    }
+    //    LOG_DBG("\n");
+    //}
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     gpio_pin_set_dt(&led, a / 50);
     a--;
