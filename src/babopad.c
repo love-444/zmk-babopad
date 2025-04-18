@@ -55,7 +55,7 @@ static int babopad_report_data(const struct device *dev) {
     //    }
     //    LOG_DBG("\n");
     //}
-    gpio_pin_set_dt(&led, (a / 10) % 2 == 1);
+    gpio_pin_set_dt(&led, 1);
     LOG_DBG("%d\n", a);
     a--;
     
