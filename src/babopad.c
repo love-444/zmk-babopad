@@ -182,7 +182,14 @@ static void babopad_async_init(struct k_work *work) {
 
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
-        struct adc_channel_cfg _pl = {};
+        struct adc_channel_cfg _pl = 
+        {
+            .gain = ADC_GAIN_1_6,
+            .reference = ADC_REF_INTERNAL,
+            .acquisition_time = ADC_ACQ_TIME_DEFAULT,
+            .channel_id = config->adc_channels[i],
+            .input_positive = config->adc_channels[i],
+        };
         nrf_saadc_channel_config_t cfg = {
             .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
             .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
