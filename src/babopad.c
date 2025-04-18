@@ -55,11 +55,11 @@ static int babopad_report_data(const struct device *dev) {
     //    }
     //    LOG_DBG("\n");
     //}
-    gpio_pin_set_dt(&led, 1);
+    gpio_pin_set_dt(&led, a > 50 ? 1 : 0);
     LOG_DBG("%d\n", a);
     a--;
     
-    if (a < 0) a = 100;
+    if (a < 1) a = 100;
     //input_report(dev, config->evt_type, config->input_code_x, 100, true, K_NO_WAIT);
     return 0;
 }
