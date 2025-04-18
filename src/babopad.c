@@ -94,31 +94,31 @@ static void babopad_async_init(struct k_work *work) {
     };
 
 
-
-    for (size_t i = 0; i < config->adc_channels_size; i++)
-    {
-        struct adc_channel_cfg _pl = 
-        {
-            .gain = ADC_GAIN_1_6,
-            .reference = ADC_REF_INTERNAL,
-            .acquisition_time = ADC_ACQ_TIME_DEFAULT,
-            .channel_id = config->adc_channels[i],
-            .input_positive = SAADC_CH_PSELP_PSELP_AnalogInput0 + config->adc_channels[i],
-        };
-        nrf_saadc_channel_config_t cfg = {
-            .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
-            .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
-            .gain = NRF_SAADC_GAIN4,
-            .reference = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time = NRF_SAADC_ACQTIME_10US,
-            .mode = NRF_SAADC_MODE_SINGLE_ENDED,
-            .burst = NRF_SAADC_BURST_DISABLED,
-        };
-        sequence.channels |= BIT(config->adc_channels[i]);
-        adc_channel_setup(adc, &_pl);
-        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
-        nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
-    }
+    //init adc
+    //for (size_t i = 0; i < config->adc_channels_size; i++)
+    //{
+    //    struct adc_channel_cfg _pl = 
+    //    {
+    //        .gain = ADC_GAIN_1_6,
+    //        .reference = ADC_REF_INTERNAL,
+    //        .acquisition_time = ADC_ACQ_TIME_DEFAULT,
+    //        .channel_id = config->adc_channels[i],
+    //        .input_positive = SAADC_CH_PSELP_PSELP_AnalogInput0 + config->adc_channels[i],
+    //    };
+    //    nrf_saadc_channel_config_t cfg = {
+    //        .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
+    //        .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
+    //        .gain = NRF_SAADC_GAIN4,
+    //        .reference = NRF_SAADC_REFERENCE_INTERNAL,
+    //        .acq_time = NRF_SAADC_ACQTIME_10US,
+    //        .mode = NRF_SAADC_MODE_SINGLE_ENDED,
+    //        .burst = NRF_SAADC_BURST_DISABLED,
+    //    };
+    //    sequence.channels |= BIT(config->adc_channels[i]);
+    //    adc_channel_setup(adc, &_pl);
+    //    nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
+    //    nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
+    //}
     // init pwm
 
 
@@ -131,7 +131,7 @@ static void babopad_async_init(struct k_work *work) {
     k_work_init(&data->sampling_work, sampling_work_handler);
     k_work_queue_start(&babopad_work_q, babopad_q_stack, K_THREAD_STACK_SIZEOF(babopad_q_stack), 10, NULL);
     k_timer_init(&data->sampling_timer, sampling_timer_handler, NULL);
-    //k_timer_start(&data->sampling_timer, K_MSEC(1), K_MSEC(1));
+    k_timer_start(&data->sampling_timer, K_MSEC(1), K_MSEC(1));
 }
 
 static int babopad_init(const struct device *dev) {
