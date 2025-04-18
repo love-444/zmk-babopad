@@ -35,7 +35,7 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static int a = 50;
+static int a = 51;
 
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
