@@ -238,8 +238,8 @@ static int babopad_init(const struct device *dev) {
         .y_invert = DT_PROP(DT_DRV_INST(n), y_invert),                                             \
         .xy_swap = DT_PROP(DT_DRV_INST(n), xy_swap),                                               \
         .evt_type = DT_PROP(DT_DRV_INST(n), evt_type),                                             \
-        .input_code_x = DT_PROP(DT_DRV_INST(n], input_code_x),                                     \
-        .input_code_y = DT_PROP(DT_DRV_INST(n], input_code_y),                                     \
+        .input_code_x = DT_PROP(DT_DRV_INST(n), input_code_x),                                     \
+        .input_code_y = DT_PROP(DT_DRV_INST(n), input_code_y),                                     \
     };                                                                                             \
                                                                                                    \
     DEVICE_DT_INST_DEFINE(n, babopad_init, NULL, &data##n, &config##n, POST_KERNEL,                \
