@@ -196,8 +196,6 @@ static void babopad_async_init(struct k_work *work) {
         adc_channel_setup(dev, &_pl);
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     gpio_pin_set_dt(&led, 1);
-        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
-        nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
     }
     // init pwm
 
