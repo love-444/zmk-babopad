@@ -126,6 +126,7 @@ static void babopad_async_init(struct k_work *work) {
     data->ready = true;
 
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_set_dt(&led, 0);
     gpio_pin_set_dt(&led, 1);
 
     k_work_init(&data->sampling_work, sampling_work_handler);
