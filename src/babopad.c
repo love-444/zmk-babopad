@@ -218,16 +218,28 @@ static int babopad_init(const struct device *dev) {
     data->dev = dev;
     k_work_init_delayable(&data->init_work, babopad_async_init);
     k_work_schedule(&data->init_work, K_MSEC(1));
-
+    input_report(dev, ch_cfg.evt_type, ch_cfg.input_code, dv, i == idx_to_sync, K_NO_WAIT);
     return err;
 }
 
-#define ANIN_IOC_CHILD_LEN_PLUS_ONE(node) 1 +
-
 #define BABOPAD_DEFINE(n)                                                                          \
     static struct babopad_data data##n = {                                                         \
-    };                                                                                             \
-    static const struct babopad_config config##n = {                                               \
+    };   
+    static int32_t adc_channels##n[] = DT_PROP(DT_DRV_INST(n), adc_channels);
+    static int32_t pwm_channels##n[] = DT_PROP(DT_DRV_INST(n), pwm_channels);
+    static const struct babopad_config config##n = { \
+        .sampling_hz = DT_PROP(DT_DRV_INST(n), sampling_hz),
+        .adc_channels_size = DT_PROP_LEN(DT_DRV_INST(n), adc_channels),
+        .adc_channels = adc_channels##n,
+        .pwm_channels_size = DT_PROP_LEN(DT_DRV_INST(n), pwm_channels),
+        .pwm_channels = pwm_channels##n,
+        .dpi = DT_PROP(DT_DRV_INST(n), dpi),
+        .x_invert = DT_PROP(DT_DRV_INST(n), x_invert),
+        .y_invert = DT_PROP(DT_DRV_INST(n), y_invert),
+        .xy_swap = DT_PROP(DT_DRV_INST(n), xy_swap),
+        .evt_type = DT_PROP(DT_DRV_INST(n), evt_type),
+        .input_code_x = DT_PROP(DT_DRV_INST(n], input_code_x),
+        .input_code_y = DT_PROP(DT_DRV_INST(n], input_code_y),
     };                                                                                             \
                                                                                                    \
     DEVICE_DT_INST_DEFINE(n, babopad_init, NULL, &data##n, &config##n, POST_KERNEL,                \
