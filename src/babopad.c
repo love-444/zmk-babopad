@@ -180,8 +180,6 @@ static void babopad_async_init(struct k_work *work) {
 
     input_report(dev, config->evt_type, config->input_code_x, 100, false, K_FOREVER);
 
-    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_set_dt(&led, 1);
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
         struct adc_channel_cfg _pl = {};
@@ -193,13 +191,15 @@ static void babopad_async_init(struct k_work *work) {
             .acq_time = NRF_SAADC_ACQTIME_10US,
             .mode = NRF_SAADC_MODE_SINGLE_ENDED,
             .burst = NRF_SAADC_BURST_DISABLED,
-    };
+        };
         sequence.channels |= BIT(config->adc_channels[i]);
         adc_channel_setup(dev, &_pl);
         nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
         nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
     }
     // init pwm
+    gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_set_dt(&led, 1);
 
 
 
