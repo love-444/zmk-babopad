@@ -198,7 +198,7 @@ static void babopad_async_init(struct k_work *work) {
     // init pwm
 
 
-    input_report(dev, config->evt_type, config->input_code_x, 12, true, K_NO_WAIT);
+    input_report(dev, config->evt_type, config->input_code_x, 12, false, K_NO_WAIT);
 
     data->ready = true;
 
