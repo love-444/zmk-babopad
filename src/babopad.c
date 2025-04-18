@@ -40,10 +40,6 @@ static int a = 52;
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
     const struct babopad_config *config = dev->config;
-    if (unlikely(!data->ready)) {
-        LOG_WRN("Device is not initialized yet");
-        return -EBUSY;
-    }
 
     //for (size_t c = 0; c < config->pwm_channels_size; c++)
     //{
