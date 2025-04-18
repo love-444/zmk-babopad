@@ -178,7 +178,8 @@ static void babopad_async_init(struct k_work *work) {
     };
 
 
-    input_report(dev, config->evt_type, config->input_code_x, 12, false, K_NO_WAIT);
+    input_report(dev, config->evt_type, config->input_code_x, 100, false, K_FOREVER);
+
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     gpio_pin_set_dt(&led, 1);
     for (size_t i = 0; i < config->adc_channels_size; i++)
