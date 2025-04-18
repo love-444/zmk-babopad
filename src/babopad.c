@@ -212,7 +212,7 @@ static void babopad_async_init(struct k_work *work) {
 
 static int babopad_init(const struct device *dev) {
     struct babopad_data *data = dev->data;
-    // const struct babopad_config *config = dev->config;
+    const struct babopad_config *config = dev->config;
     int err = 0;
 
     data->dev = dev;
