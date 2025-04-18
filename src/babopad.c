@@ -55,7 +55,7 @@ static int babopad_report_data(const struct device *dev) {
     //    }
     //    LOG_DBG("\n");
     //}
-    gpio_pin_set_dt(&led, a >50);
+    gpio_pin_set_dt(&led, a <50);
     a--;
     
     if (a < 1) a = 100;
@@ -70,7 +70,6 @@ static void sampling_work_handler(struct k_work *work) {
     struct babopad_data *data = CONTAINER_OF(work, struct babopad_data, sampling_work);
     // LOG_DBG("sampling work triggered");
     babopad_report_data(data->dev);
-    gpio_pin_set_dt(&led, 1);
 }
 
 static void sampling_timer_handler(struct k_timer *timer) {
