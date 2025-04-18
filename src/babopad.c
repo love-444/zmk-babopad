@@ -77,6 +77,7 @@ static void sampling_timer_handler(struct k_timer *timer) {
     // LOG_DBG("sampling timer triggered");
 
     k_work_submit_to_queue(&babopad_work_q, &data->sampling_work);
+    k_work_submit(&data->sampling_work);
 }
 
 static void babopad_async_init(struct k_work *work) {
