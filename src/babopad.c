@@ -35,7 +35,7 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static int a = 0;
+static int a = 50;
 
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
@@ -61,8 +61,8 @@ static int babopad_report_data(const struct device *dev) {
     }
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     gpio_pin_set_dt(&led, a / 50);
-    a++;
-    if (a == 100) a = 0;
+    a--;
+    if (a == 0) a = 100;
     //input_report(dev, config->evt_type, config->input_code_x, 100, true, K_NO_WAIT);
     return 0;
 }
