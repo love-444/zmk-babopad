@@ -70,13 +70,12 @@ static void sampling_work_handler(struct k_work *work) {
     struct babopad_data *data = CONTAINER_OF(work, struct babopad_data, sampling_work);
     // LOG_DBG("sampling work triggered");
     babopad_report_data(data->dev);
-    gpio_pin_set_dt(&led, 0);
+    gpio_pin_set_dt(&led, 1);
 }
 
 static void sampling_timer_handler(struct k_timer *timer) {
     struct babopad_data *data = CONTAINER_OF(timer, struct babopad_data, sampling_timer);
     // LOG_DBG("sampling timer triggered");
-    gpio_pin_set_dt(&led, 1);
 
     k_work_submit(&data->sampling_work);
 }
