@@ -200,7 +200,7 @@ static void babopad_async_init(struct k_work *work) {
             .burst = NRF_SAADC_BURST_DISABLED,
         };
         sequence.channels |= BIT(config->adc_channels[i]);
-        adc_channel_setup(dev, &_pl);
+        adc_channel_setup(adc, &_pl);
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
     gpio_pin_set_dt(&led, 1);
     }
