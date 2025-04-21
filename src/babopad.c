@@ -35,7 +35,7 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static int a = 44;
+static int a = 10;
 
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
@@ -56,6 +56,10 @@ static int babopad_report_data(const struct device *dev) {
     //    LOG_DBG("\n");
     //}
     //input_report(dev, config->evt_type, config->input_code_x, 100, true, K_NO_WAIT);
+    gpio_pin_set_dt(&led, a < 5);
+    a--;
+    if (a == 0) a = 10;
+    k_msleep(100);
     return 0;
 }
 
@@ -71,8 +75,6 @@ static void sampling_work_handler(struct k_work *work) {
 static void sampling_timer_handler(struct k_timer *timer) {
     struct babopad_data *data = CONTAINER_OF(timer, struct babopad_data, sampling_timer);
     // LOG_DBG("sampling timer triggered");
-    gpio_pin_set_dt(&led, a < 40);
-    a--;
 
     if (a < 1) a = 100;
 
