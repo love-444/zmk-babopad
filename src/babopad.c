@@ -23,7 +23,7 @@ LOG_MODULE_REGISTER(BABOPAD, CONFIG_ZMK_LOG_LEVEL);
 static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-uint16_t adc_reading[4][8];
+uint16_t adc_reading[4][3];
 uint16_t map[8][8];
 static const struct adc_sequence_options options = {
     .extra_samplings = 4 - 1,
