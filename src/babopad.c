@@ -42,21 +42,21 @@ static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
     const struct babopad_config *config = dev->config;
 
-    for (size_t c = 0; c < config->pwm_channels_size; c++)
-    {
-        int err = adc_read(adc, &sequence);        
-        for (size_t r = 0; r < config->adc_channels_size; r++)
-        {
-            map[c][r] = 0;
-            for (size_t i = 0; i < 4; i++)
-            {
-                map[c][r] += adc_reading[i][r];
-            }
-            LOG_DBG("%d ", map[c][r]);
-        }
-        LOG_DBG("\n");
-    }
-    input_report_rel(dev, INPUT_REL_X, 10, true, K_FOREVER);
+    //for (size_t c = 0; c < config->pwm_channels_size; c++)
+    //{
+    //    int err = adc_read(adc, &sequence);        
+    //    for (size_t r = 0; r < config->adc_channels_size; r++)
+    //    {
+    //        map[c][r] = 0;
+    //        for (size_t i = 0; i < 4; i++)
+    //        {
+    //            map[c][r] += adc_reading[i][r];
+    //        }
+    //        LOG_DBG("%d ", map[c][r]);
+    //    }
+    //    LOG_DBG("\n");
+    //}
+    //input_report_rel(dev, INPUT_REL_X, 10, true, K_FOREVER);
     return 0;
 }
 
@@ -93,29 +93,28 @@ static void babopad_async_init(struct k_work *work) {
     //init adc
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
-        struct adc_channel_cfg _pl = 
-        {
-            .gain = ADC_GAIN_1_6,
-            .reference = ADC_REF_INTERNAL,
-            .acquisition_time = ADC_ACQ_TIME_DEFAULT,
-            .channel_id = config->adc_channels[i],
-            .input_positive = SAADC_CH_PSELP_PSELP_AnalogInput0 + config->adc_channels[i],
-        };
-        nrf_saadc_channel_config_t cfg = {
-            .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
-            .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
-            .gain = NRF_SAADC_GAIN4,
-            .reference = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time = NRF_SAADC_ACQTIME_10US,
-            .mode = NRF_SAADC_MODE_SINGLE_ENDED,
-            .burst = NRF_SAADC_BURST_DISABLED,
-        };
-        sequence.channels |= BIT(config->adc_channels[i]);
-        //this weird thing is for enabling internal adc resistors(nrfx driver), not supported by zephyr driver
-        adc_channel_setup(adc, &_pl);
-        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
-        nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
-    }
+    //    struct adc_channel_cfg _pl = 
+    //    {
+    //        .gain = ADC_GAIN_1_6,
+    //        .reference = ADC_REF_INTERNAL,
+    //        .acquisition_time = ADC_ACQ_TIME_DEFAULT,
+    //        .channel_id = config->adc_channels[i],
+    //        .input_positive = SAADC_CH_PSELP_PSELP_AnalogInput0 + config->adc_channels[i],
+    //    };
+    //    nrf_saadc_channel_config_t cfg = {
+    //        .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
+    //        .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
+    //        .gain = NRF_SAADC_GAIN4,
+    //        .reference = NRF_SAADC_REFERENCE_INTERNAL,
+    //        .acq_time = NRF_SAADC_ACQTIME_10US,
+    //        .mode = NRF_SAADC_MODE_SINGLE_ENDED,
+    //        .burst = NRF_SAADC_BURST_DISABLED,
+    //    };
+    //    sequence.channels |= BIT(config->adc_channels[i]);
+    //    adc_channel_setup(adc, &_pl);
+    //    nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
+    //    nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
+    //}
     // init pwm
 
 
