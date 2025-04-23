@@ -98,7 +98,7 @@ static void babopad_async_init(struct k_work *work) {
             .reference = ADC_REF_INTERNAL,
             .acquisition_time = ADC_ACQ_TIME_DEFAULT,
             .channel_id = config->adc_channels[i],
-            .input_positive = SAADC_CH_PSELP_PSELP_AnalogInput0 + config->adc_channels[i],
+            .input_positive = config->adc_channels[i],
         };
         nrf_saadc_channel_config_t cfg = {
             .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
