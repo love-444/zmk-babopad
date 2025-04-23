@@ -91,8 +91,8 @@ static void babopad_async_init(struct k_work *work) {
 
 
     //init adc
-    for (size_t i = 0; i < config->adc_channels_size; i++)
-    {
+    //for (size_t i = 0; i < config->adc_channels_size; i++)
+    //{
     //    struct adc_channel_cfg _pl = 
     //    {
     //        .gain = ADC_GAIN_1_6,
