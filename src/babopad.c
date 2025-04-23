@@ -51,9 +51,10 @@ static int babopad_report_data(const struct device *dev) {
             for (size_t i = 0; i < 4; i++)
             {
                 map[c][r] += adc_reading[i][r];
+
             }
+            LOG_DBG("%d %d %d %d", adc_reading[0][r], adc_reading[1][r], adc_reading[2][r], adc_reading[3][r]);
         }
-        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
     }
     return 0;
 }
