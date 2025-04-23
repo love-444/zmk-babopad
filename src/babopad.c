@@ -56,9 +56,9 @@ static int babopad_report_data(const struct device *dev) {
         }
         LOG_DBG("\n");
     }
-    if (map[0][0] > 10000) input_report_rel(dev, INPUT_REL_X, 1, true, K_NO_WAIT);
-    if (map[0][1] > 10000) input_report_rel(dev, INPUT_REL_Y, 1, true, K_NO_WAIT);
-    if (map[0][2] > 10000) input_report_rel(dev, INPUT_REL_X, -1, true, K_NO_WAIT);
+    if (map[0][0] > 1000) input_report_rel(dev, INPUT_REL_X, 1, true, K_NO_WAIT);
+    if (map[0][1] > 1000) input_report_rel(dev, INPUT_REL_Y, 1, true, K_NO_WAIT);
+    if (map[0][2] > 1000) input_report_rel(dev, INPUT_REL_X, -1, true, K_NO_WAIT);
     return 0;
 }
 
