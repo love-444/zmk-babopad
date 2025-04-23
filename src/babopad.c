@@ -54,7 +54,7 @@ static int babopad_report_data(const struct device *dev) {
             }
             LOG_DBG("%d ", map[c][r]);
         }
-        LOG_DBG("\n");
+        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
     }
     return 0;
 }
