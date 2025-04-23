@@ -15,7 +15,7 @@
 #include <haly/nrfy_saadc.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
-LOG_MODULE_REGISTER(BABOPAD, 3);
+LOG_MODULE_REGISTER(BABOPAD, CONFIG_ZMK_LOG_LEVEL);
 
 #include "babopad.h"
 
