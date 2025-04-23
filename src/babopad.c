@@ -52,7 +52,6 @@ static int babopad_report_data(const struct device *dev) {
             {
                 map[c][r] += adc_reading[i][r];
             }
-            LOG_DBG("%d ", map[c][r]);
         }
         LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
     }
@@ -111,8 +110,8 @@ static void babopad_async_init(struct k_work *work) {
         };
         sequence.channels |= BIT(config->adc_channels[i]);
         adc_channel_setup(adc, &_pl);
-        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
-        nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
+        //nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
+        //nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, 0);
     }
     // init pwm
 
