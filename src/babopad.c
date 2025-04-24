@@ -25,10 +25,10 @@ static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
 //static const struct pwm_dt_spec pwm = PWM_DT_SPEC_GET(PWM_NODE);
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-uint16_t adc_reading[4][3];
+uint16_t adc_reading[8][3];
 uint16_t map[8][8];
 static const struct adc_sequence_options options = {
-    .extra_samplings = 4 - 1,
+    .extra_samplings = 8 - 1,
     .interval_us = 0,
 };
 static struct adc_sequence sequence = {
@@ -55,7 +55,7 @@ static int babopad_report_data(const struct device *dev) {
                 map[c][r] += adc_reading[i][r];
 
             }
-            LOG_DBG("%d: %d %d %d %d", r, adc_reading[0][r], adc_reading[1][r], adc_reading[2][r], adc_reading[3][r]);
+            LOG_DBG("%d: %d %d %d %d", r, adc_reading[4][r], adc_reading[5][r], adc_reading[6][r], adc_reading[7][r]);
         }
     }
     return 0;
@@ -111,7 +111,7 @@ static void babopad_async_init(struct k_work *work) {
             .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
             .gain = NRF_SAADC_GAIN1_6,
             .reference = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time = NRF_SAADC_ACQTIME_10US,
+            .acq_time = NRF_SAADC_ACQTIME_30US,
             .mode = NRF_SAADC_MODE_SINGLE_ENDED,
             .burst = NRF_SAADC_BURST_DISABLED,
         };
