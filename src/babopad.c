@@ -106,7 +106,7 @@ static void babopad_async_init(struct k_work *work) {
             .reference = ADC_REF_INTERNAL,
             .acquisition_time = ADC_ACQ_TIME_DEFAULT,
             .channel_id = config->adc_channels[i],
-            .differential = 1,
+            .differential = 0,
             .input_positive = config->adc_channels[i] + 1,
         };
         nrf_saadc_channel_config_t cfg = {
