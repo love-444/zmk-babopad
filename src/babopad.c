@@ -22,11 +22,11 @@ LOG_MODULE_REGISTER(BABOPAD, CONFIG_ZMK_LOG_LEVEL);
 #define ADC_NODE DT_ALIAS(adc0)
 static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
 #define PWM0_NODE DT_ALIAS(pwm00)
-static const struct pwm_dt_spec pwm0 = PWM_DT_SPEC_GET(PWM0_NODE);
+//static const struct pwm_dt_spec pwm0 = PWM_DT_SPEC_GET(PWM0_NODE);
 #define PWM1_NODE DT_ALIAS(pwm01)
-static const struct pwm_dt_spec pwm1 = PWM_DT_SPEC_GET(PWM1_NODE);
+//static const struct pwm_dt_spec pwm1 = PWM_DT_SPEC_GET(PWM1_NODE);
 #define PWM2_NODE DT_ALIAS(pwm02)
-static const struct pwm_dt_spec pwm2 = PWM_DT_SPEC_GET(PWM2_NODE);
+//static const struct pwm_dt_spec pwm2 = PWM_DT_SPEC_GET(PWM2_NODE);
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 uint16_t adc_reading[3][8];
