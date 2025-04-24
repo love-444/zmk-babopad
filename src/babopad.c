@@ -133,7 +133,7 @@ static void babopad_async_init(struct k_work *work) {
         nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, NRF_SAADC_INPUT_DISABLED);
     }
     // init pwm
-    pwm_set_dt(&pwm0, PWM_NSEC(1000), PWM_NSEC(250));
+    pwm_set_dt(&pwm0, PWM_NSEC(30000), PWM_NSEC(250));
     pwm_set_dt(&pwm1, PWM_NSEC(250), PWM_NSEC(250));
     pwm_set_dt(&pwm2, PWM_NSEC(250), PWM_NSEC(250));
 
