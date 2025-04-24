@@ -111,8 +111,8 @@ static void babopad_async_init(struct k_work *work) {
             .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
             .gain = NRF_SAADC_GAIN1_6,
             .reference = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time = NRF_SAADC_ACQTIME_40US,
-            .mode = NRF_SAADC_MODE_SINGLE_ENDED,
+            .acq_time = NRF_SAADC_ACQTIME_10US,
+            .mode = NRF_SAADC_MODE_DIFFERENTIAL,
             .burst = NRF_SAADC_BURST_DISABLED,
         };
         sequence.channels |= BIT(config->adc_channels[i]);
