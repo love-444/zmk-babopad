@@ -111,7 +111,7 @@ static void babopad_async_init(struct k_work *work) {
             .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
             .gain = NRF_SAADC_GAIN1_6,
             .reference = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time = NRF_SAADC_ACQTIME_30US,
+            .acq_time = NRF_SAADC_ACQTIME_40US,
             .mode = NRF_SAADC_MODE_SINGLE_ENDED,
             .burst = NRF_SAADC_BURST_DISABLED,
         };
