@@ -25,15 +25,15 @@ static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
 //static const struct pwm_dt_spec pwm = PWM_DT_SPEC_GET(PWM_NODE);
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-uint16_t adc_reading[8][3];
-uint16_t map[8][8];
+uint16_t adc_reading[3][8];
+uint16_t map[3][3];
 static const struct adc_sequence_options options = {
     .extra_samplings = 8 - 1,
     .interval_us = 0,
 };
 static struct adc_sequence sequence = {
-    .buffer = adc_reading,
-    .buffer_size = sizeof(adc_reading),
+    .buffer = &adc_reading[0][0],
+    .buffer_size = sizeof(adc_reading) / 3,
     .resolution = 12,
     .options = &options,
 };
@@ -46,16 +46,18 @@ static int babopad_report_data(const struct device *dev) {
 
     for (size_t c = 0; c < config->pwm_channels_size; c++)
     {
-        int err = adc_read(adc, &sequence);        
         for (size_t r = 0; r < config->adc_channels_size; r++)
         {
+            sequence.buffer = &adc_reading[r][0];
+            sequence.channels = BIT(config->adc_channels[r]);
+            int err = adc_read(adc, &sequence);
             map[c][r] = 0;
             for (size_t i = 0; i < 4; i++)
             {
-                map[c][r] += adc_reading[i][r];
+                map[c][r] += adc_reading[r][i];
 
             }
-            LOG_DBG("%d: %d %d %d %d", r, (short)adc_reading[4][r], (short)adc_reading[5][r], (short)adc_reading[6][r], (short)adc_reading[7][r]);
+            LOG_DBG("%d: %d %d %d %d", r, (short)adc_reading[r][4], (short)adc_reading[r][5], (short)adc_reading[r][6], (short)adc_reading[r][7]);
         }
     }
     return 0;
@@ -116,7 +118,6 @@ static void babopad_async_init(struct k_work *work) {
             .mode = NRF_SAADC_MODE_DIFFERENTIAL,
             .burst = NRF_SAADC_BURST_DISABLED,
         };
-        sequence.channels |= BIT(config->adc_channels[i]);
         adc_channel_setup(adc, &_pl);
         //nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
         //nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, NRF_SAADC_INPUT_DISABLED);
