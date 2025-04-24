@@ -9,6 +9,7 @@
 #include <zephyr/drivers/spi.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/adc.h>
+#include <zephyr/drivers/pwm.h>
 #include <zephyr/drivers/sensor.h>
 
 #ifdef __cplusplus
