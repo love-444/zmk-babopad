@@ -98,12 +98,13 @@ static void babopad_async_init(struct k_work *work) {
     //init adc
     for (size_t i = 0; i < config->adc_channels_size; i++)
     {
-        struct adc_channel_cfg _pl = 
+        struct adc_channel_cfg _pl =
         {
             .gain = ADC_GAIN_1_6,
             .reference = ADC_REF_INTERNAL,
             .acquisition_time = ADC_ACQ_TIME_DEFAULT,
             .channel_id = config->adc_channels[i],
+            .differential = 1;
             .input_positive = config->adc_channels[i] + 1,
         };
         nrf_saadc_channel_config_t cfg = {
