@@ -30,10 +30,10 @@ static const struct pwm_dt_spec pwm1 = PWM_DT_SPEC_GET(PWM1_NODE);
 static const struct pwm_dt_spec pwm2 = PWM_DT_SPEC_GET(PWM2_NODE);
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-uint16_t adc_reading[3][8];
+uint16_t adc_reading[3][16];
 uint16_t map[3][3];
 static const struct adc_sequence_options options = {
-    .extra_samplings = 8 - 1,
+    .extra_samplings = 16 - 1,
     .interval_us = 0,
 };
 static struct adc_sequence sequence = {
@@ -57,13 +57,14 @@ static int babopad_report_data(const struct device *dev) {
             sequence.channels = BIT(config->adc_channels[r]);
             int err = adc_read(adc, &sequence);
             map[c][r] = 0;
-            for (size_t i = 0; i < 4; i++)
+            for (size_t i = 0; i < 16; i++)
             {
                 map[c][r] += adc_reading[r][i];
 
             }
-            LOG_DBG("%d: %d %d %d %d", r, (short)adc_reading[r][4], (short)adc_reading[r][5], (short)adc_reading[r][6], (short)adc_reading[r][7]);
+            map[c][r] >>= 4;
         }
+        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
     }
     return 0;
 }
