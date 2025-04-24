@@ -5,6 +5,7 @@
  */
 
 #define DT_DRV_COMPAT zmk_babopad
+#define PWM_PERIOD_4MHZ PWM_KHZ(4000)
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/byteorder.h>
@@ -133,10 +134,9 @@ static void babopad_async_init(struct k_work *work) {
         nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, NRF_SAADC_INPUT_DISABLED);
     }
     // init pwm
-    pwm_set_dt(&pwm0, PWM_NSEC(30000), PWM_NSEC(250));
-    pwm_set_dt(&pwm1, PWM_NSEC(250), PWM_NSEC(250));
-    pwm_set_dt(&pwm2, PWM_NSEC(250), PWM_NSEC(250));
-
+    pwm_set_dt(&pwm0, PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
+    pwm_set_dt(&pwm1, PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
+    pwm_set_dt(&pwm2, PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
     data->ready = true;
 
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
