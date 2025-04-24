@@ -90,9 +90,9 @@ static void babopad_async_init(struct k_work *work) {
         return;
     };
 
-    if (!pwm_is_ready_dt(&pwm)) {
-        return;
-    }
+    //if (!pwm_is_ready_dt(&pwm)) {
+    //    return;
+    //}
 
 
     //init adc
