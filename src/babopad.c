@@ -128,7 +128,7 @@ static void babopad_async_init(struct k_work *work) {
         };
         nrf_saadc_channel_config_t cfg = {
             .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
-            .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
+            .resistor_n = NRF_SAADC_RESISTOR_PULLDOWN,
             .gain = NRF_SAADC_GAIN1_6,
             .reference = NRF_SAADC_REFERENCE_INTERNAL,
             .acq_time = NRF_SAADC_ACQTIME_10US,
