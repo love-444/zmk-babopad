@@ -42,6 +42,8 @@ static struct adc_sequence sequence = {
 };
 
 static int a = 46;
+static int x_b = 65535;
+static int y_b = 65535;
 
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
@@ -72,14 +74,28 @@ static int babopad_report_data(const struct device *dev) {
     int x = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
     int y = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
-    if (total <= 400) return 0;
+    if (total <= 300)
+    {
+        x_b = 65535;
+        y_b = 65535;
+        return 0;
+    }
     x = 128 * x / total;
     y = 128 * y / total;
     LOG_DBG("%d %d %d", x, y, total);
 
     //2. filter fluctuation
     //3. filter with value threshold
+    
     //4. move cursor
+    if (x_b == 65535 || y_b == 65535)
+    {
+        x_b = x;
+        y_b = y;
+        return;
+    }
+    input_report(dev, config->evt_type, config->input_code_x, x - x_b, false, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_x, y - y_b, true, K_FOREVER);
     return 0;
 }
 
