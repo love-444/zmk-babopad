@@ -71,8 +71,8 @@ static int babopad_report_data(const struct device *dev) {
 
     //analyse coord:
     //1. get x-mean, y-mean, total value
-    int x = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
-    int y = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
+    int x = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
+    int y = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
     if (total <= 500)
     {
