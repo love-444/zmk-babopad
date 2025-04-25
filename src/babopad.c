@@ -63,6 +63,7 @@ static int babopad_report_data(const struct device *dev) {
             }
             map[c][r] >>= 4;
         }
+        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
         pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, 0);
     }
 
@@ -73,7 +74,7 @@ static int babopad_report_data(const struct device *dev) {
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
     x = 128 * x / total;
     y = 128 * y / total;
-    LOG_DBG("%d %d %d", x, y, total);
+
     //2. filter fluctuation
     //3. filter with value threshold
     //4. move cursor
@@ -122,7 +123,7 @@ static void babopad_async_init(struct k_work *work) {
             .reference = ADC_REF_INTERNAL,
             .acquisition_time = ADC_ACQ_TIME_DEFAULT,
             .channel_id = config->adc_channels[i],
-            .differential = 0,
+            .differential = 1,
             .input_positive = config->adc_channels[i] + SAADC_CH_PSELP_PSELP_AnalogInput0,
         };
         adc_channel_setup(adc, &_pl);
