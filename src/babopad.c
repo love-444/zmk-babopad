@@ -58,12 +58,12 @@ static int babopad_report_data(const struct device *dev) {
             map[c][r] = 0;
             for (size_t i = 0; i < 16; i++)
             {
-                map[c][r] += (adc_reading[r][i] > 8000) ? adc_reading[r][i] - 8192 : adc_reading[r][i];
+                map[c][r] += (adc_reading[r][i] > 4000) ? adc_reading[r][i] - 4096 : adc_reading[r][i];
 
             }
+            LOG_DBG("%d %d %d", adc_reading[r][0], adc_reading[r][1], adc_reading[r][2]);
             map[c][r] >>= 4;
         }
-        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
         pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, 0);
     }
 
