@@ -47,7 +47,7 @@ static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
     const struct babopad_config *config = dev->config;
 
-    for (size_t c = 0; c < 1; c++)
+    for (size_t c = 0; c < 3; c++)
     {
         pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
         for (size_t r = 0; r < config->adc_channels_size; r++)
