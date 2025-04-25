@@ -95,7 +95,7 @@ static int babopad_report_data(const struct device *dev) {
         return;
     }
     input_report(dev, config->evt_type, config->input_code_x, x - x_b, false, K_FOREVER);
-    input_report(dev, config->evt_type, config->input_code_y, y - y_b, true, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_y, -(y - y_b), true, K_FOREVER);
     x_b = x;
     y_b = y;
     return 0;
@@ -161,7 +161,7 @@ static void babopad_async_init(struct k_work *work) {
     k_work_init(&data->sampling_work, sampling_work_handler);
     k_work_queue_start(&babopad_work_q, babopad_q_stack, K_THREAD_STACK_SIZEOF(babopad_q_stack), 50, NULL);
     k_timer_init(&data->sampling_timer, sampling_timer_handler, NULL);
-    k_timer_start(&data->sampling_timer, K_MSEC(10), K_MSEC(10));
+    k_timer_start(&data->sampling_timer, K_MSEC(1), K_MSEC(1));
 }
 
 static int babopad_init(const struct device *dev) {
