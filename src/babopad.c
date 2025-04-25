@@ -123,7 +123,7 @@ static void babopad_async_init(struct k_work *work) {
             .reference = ADC_REF_INTERNAL,
             .acquisition_time = ADC_ACQ_TIME_DEFAULT,
             .channel_id = config->adc_channels[i],
-            .differential = 1,
+            .differential = 0,
             .input_positive = config->adc_channels[i] + SAADC_CH_PSELP_PSELP_AnalogInput0,
         };
         adc_channel_setup(adc, &_pl);
