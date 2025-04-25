@@ -63,7 +63,6 @@ static int babopad_report_data(const struct device *dev) {
             }
             map[c][r] >>= 4;
         }
-        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
         pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, 0);
     }
 
@@ -72,8 +71,10 @@ static int babopad_report_data(const struct device *dev) {
     int x = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
     int y = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
+    if (total <= 0) return 0;
     x = 128 * x / total;
     y = 128 * y / total;
+    LOG_DBG("%d %d %d", x, y, total);
 
     //2. filter fluctuation
     //3. filter with value threshold
