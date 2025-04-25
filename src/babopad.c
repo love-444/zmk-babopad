@@ -126,18 +126,7 @@ static void babopad_async_init(struct k_work *work) {
             .differential = 0,
             .input_positive = config->adc_channels[i] + 1,
         };
-        nrf_saadc_channel_config_t cfg = {
-            .resistor_p = NRF_SAADC_RESISTOR_PULLDOWN,
-            .resistor_n = NRF_SAADC_RESISTOR_PULLDOWN,
-            .gain = NRF_SAADC_GAIN1_6,
-            .reference = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time = NRF_SAADC_ACQTIME_10US,
-            .mode = NRF_SAADC_MODE_SINGLE_ENDED,
-            .burst = NRF_SAADC_BURST_DISABLED,
-        };
-        //adc_channel_setup(adc, &_pl);
-        nrf_saadc_channel_init(NRF_SAADC, config->adc_channels[i], &cfg);
-        nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, NRF_SAADC_INPUT_DISABLED);
+        adc_channel_setup(adc, &_pl);
     }
     // init pwm
     pwm_set_dt(&pwm[0], PWM_PERIOD_4MHZ, 0);
