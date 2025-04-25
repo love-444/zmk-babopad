@@ -121,7 +121,7 @@ static void babopad_async_init(struct k_work *work) {
     {
         struct adc_channel_cfg _pl =
         {
-            .gain = ADC_GAIN_1,
+            .gain = ADC_GAIN_2,
             .reference = ADC_REF_INTERNAL,
             .acquisition_time = ADC_ACQ_TIME_DEFAULT,
             .channel_id = config->adc_channels[i],
