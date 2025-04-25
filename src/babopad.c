@@ -58,7 +58,7 @@ static int babopad_report_data(const struct device *dev) {
             map[c][r] = 0;
             for (size_t i = 0; i < 16; i++)
             {
-                map[c][r] += (adc_reading[r][i] > 4000) ? adc_reading[r][i] - 4096 : adc_reading[r][i];
+                map[c][r] += (adc_reading[r][i] > 2000) ? adc_reading[r][i] - 2048 : adc_reading[r][i];
 
             }
             map[c][r] >>= 4;
