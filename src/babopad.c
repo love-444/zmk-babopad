@@ -49,7 +49,7 @@ static int babopad_report_data(const struct device *dev) {
 
     for (size_t c = 0; c < config->pwm_channels_size; c++)
     {
-        //pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
+        pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
         for (size_t r = 0; r < config->adc_channels_size; r++)
         {
             sequence.buffer = &adc_reading[r][0];
