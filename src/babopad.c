@@ -23,11 +23,9 @@ LOG_MODULE_REGISTER(BABOPAD, CONFIG_ZMK_LOG_LEVEL);
 #define ADC_NODE DT_ALIAS(adc0)
 static const struct device* adc = DEVICE_DT_GET(ADC_NODE);
 #define PWM0_NODE DT_ALIAS(pwm00)
-static const struct pwm_dt_spec pwm0 = PWM_DT_SPEC_GET(PWM0_NODE);
 #define PWM1_NODE DT_ALIAS(pwm01)
-static const struct pwm_dt_spec pwm1 = PWM_DT_SPEC_GET(PWM1_NODE);
 #define PWM2_NODE DT_ALIAS(pwm02)
-static const struct pwm_dt_spec pwm2 = PWM_DT_SPEC_GET(PWM2_NODE);
+static const struct pwm_dt_spec pwm[3] = { PWM_DT_SPEC_GET(PWM0_NODE), PWM_DT_SPEC_GET(PWM1_NODE), PWM_DT_SPEC_GET(PWM2_NODE), };
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 uint16_t adc_reading[3][16];
@@ -51,6 +49,7 @@ static int babopad_report_data(const struct device *dev) {
 
     for (size_t c = 0; c < config->pwm_channels_size; c++)
     {
+        pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
         for (size_t r = 0; r < config->adc_channels_size; r++)
         {
             sequence.buffer = &adc_reading[r][0];
@@ -64,8 +63,21 @@ static int babopad_report_data(const struct device *dev) {
             }
             map[c][r] >>= 4;
         }
-        LOG_DBG("%d %d %d", map[c][0], map[c][1], map[c][2]);
+        pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, 0);
     }
+
+    //analyse coord:
+    //1. get x-mean, y-mean, total value
+    int x = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
+    int y = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
+    int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
+    x = 128 * x / total;
+    y = 128 * y / total;
+
+    LOG_DBG("%d %d %d", x, y, total);
+    //2. filter fluctuation
+    //3. filter with value threshold
+    //4. move cursor
     return 0;
 }
 
@@ -97,17 +109,10 @@ static void babopad_async_init(struct k_work *work) {
     if (!device_is_ready(adc)) {
         return;
     };
-
-    if (!pwm_is_ready_dt(&pwm0)) {
+    for (int i = 0; i < 3; i++)
+    if (!pwm_is_ready_dt(&pwm[i])) {
         return;
     }
-    if (!pwm_is_ready_dt(&pwm1)) {
-        return;
-    }
-    if (!pwm_is_ready_dt(&pwm2)) {
-        return;
-    }
-
 
     //init adc
     for (size_t i = 0; i < config->adc_channels_size; i++)
@@ -135,9 +140,10 @@ static void babopad_async_init(struct k_work *work) {
         nrf_saadc_channel_input_set(NRF_SAADC, config->adc_channels[i], NRF_SAADC_INPUT_DISABLED, NRF_SAADC_INPUT_DISABLED);
     }
     // init pwm
-    pwm_set_dt(&pwm0, PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
-    pwm_set_dt(&pwm1, PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
-    pwm_set_dt(&pwm2, PWM_PERIOD_4MHZ, PWM_PERIOD_4MHZ / 2U);
+    pwm_set_dt(&pwm[0], PWM_PERIOD_4MHZ, 0);
+    pwm_set_dt(&pwm[1], PWM_PERIOD_4MHZ, 0);
+    pwm_set_dt(&pwm[2], PWM_PERIOD_4MHZ, 0);
+
     data->ready = true;
 
     gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
