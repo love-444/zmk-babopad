@@ -96,6 +96,8 @@ static int babopad_report_data(const struct device *dev) {
     }
     input_report(dev, config->evt_type, config->input_code_x, x - x_b, false, K_FOREVER);
     input_report(dev, config->evt_type, config->input_code_y, y - y_b, true, K_FOREVER);
+    x_b = x;
+    y_b = y;
     return 0;
 }
 
