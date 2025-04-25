@@ -64,6 +64,7 @@ static int babopad_report_data(const struct device *dev) {
             map[c][r] >>= 4;
         }
         pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, 0);
+        k_sleep(K_USEC(30));
     }
 
     //analyse coord:
