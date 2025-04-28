@@ -54,9 +54,9 @@ static inline void filter()
         x[i] = x[i];
         p[i] = p[i] + q[i];
         k[i] = p[i] / (p[i] + k[i]);
-        x[i] += k[i] * ((float)(raw[i]) - x[i]);
+        x[i] = x[i] + k[i] * ((float)(raw[i / 3][i % 3]) - x[i]);
         p[i] = (1 - k[i]) * p[i];
-        map[i] = (int16_t)(x[i]);
+        map[i / 3][i % 3] = (int16_t)(x[i]);
     }
 }
 
