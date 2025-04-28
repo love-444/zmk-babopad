@@ -5,7 +5,7 @@
  */
 
 #define DT_DRV_COMPAT zmk_babopad
-#define PWM_PERIOD_4MHZ PWM_KHZ(4000)
+#define PWM_PERIOD_4MHZ PWM_KHZ(3000)
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/byteorder.h>
