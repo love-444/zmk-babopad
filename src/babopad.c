@@ -41,27 +41,10 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static inline void filter(int* _x, int* _y, int* _total)
-{
-    static float q[3] = { 0.125, 0.125, 0.125 };
-    static float r[3] = { 32, 32, 32 };
-    static float x[3] = { 0, 0, 1000 };
-    static float v[3] = { 0, 0, 0 };
-    static float p[3] = { 127, 127, 4095 };
-    static float k[3] = { 0, 0, 0 };
-    v[0] = *_x; v[1] = *_y; v[2] = *_total;
+static int a = 46;
+static int x_b = 65535;
+static int y_b = 65535;
 
-    for (int i = 0; i < 3; i++)
-    {
-        p[i] += q[i];
-        k[i] = p[i] / (p[i] + r[i]);
-        x[i] += k[i] * (v[i] - x[i]);
-        p[i] *= (1 - k[i]);
-    }
-    *_x = x[0]; *_y = x[1]; *_total = x[2];
-}
-
-int x_b = 65535, y_b = 65535;
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
     const struct babopad_config *config = dev->config;
@@ -91,33 +74,28 @@ static int babopad_report_data(const struct device *dev) {
     int x = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
     int y = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
-    if (total ===)
-    x = 128 * x / total;
-    y = 128 * y / total;
-
-    //2. filter fluctuation
-    filter(&x, &y, &total);
-
-    //3. filter with value threshold
-    if (total < 500)
+    if (total <= 500)
     {
-        x_b = y_b = 65535;
+        x_b = 65535;
+        y_b = 65535;
         return 0;
     }
+    x = 128 * x / total;
+    y = 128 * y / total;
+    LOG_DBG("%d %d %d", x, y, total);
 
-     LOG_DBG("%d %d %d", x, y, total);
-   
+    //2. filter fluctuation
+    //3. filter with value threshold
+    
     //4. move cursor
     if (x_b == 65535 || y_b == 65535)
     {
         x_b = x;
         y_b = y;
-        return 0;
+        return;
     }
-    int dx = x - x_b;
-    int dy = y - y_b;
-    input_report(dev, config->evt_type, config->input_code_x, dx, false, K_FOREVER);
-    input_report(dev, config->evt_type, config->input_code_y, dy, true, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_x, x - x_b, false, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_y, -(y - y_b), true, K_FOREVER);
     x_b = x;
     y_b = y;
     return 0;
