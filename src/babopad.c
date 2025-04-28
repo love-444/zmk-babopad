@@ -43,8 +43,8 @@ static struct adc_sequence sequence = {
 
 static inline void filter(int* _x, int* _y, int* _total)
 {
-    static float q[3] = { 0.25, 0.25, 10 };
-    static float r[3] = { 32, 32, 32 };
+    static float q[3] = { 0.5, 0.5, 10 };
+    static float r[3] = { 32, 32, 1024 };
     static float x[3] = { 0, 0, 1000 };
     static float v[3] = { 0, 0, 0 };
     static float p[3] = { 127, 127, 4095 };
@@ -114,8 +114,8 @@ static int babopad_report_data(const struct device *dev) {
         y_b = y;
         return;
     }
-    input_report(dev, config->evt_type, config->input_code_x, x - x_b, false, K_FOREVER);
-    input_report(dev, config->evt_type, config->input_code_y, -(y - y_b), true, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_x, 6 * (x - x_b), false, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_y, -6 * (y - y_b), true, K_FOREVER);
     x_b = x;
     y_b = y;
     return 0;
