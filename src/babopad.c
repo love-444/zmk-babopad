@@ -29,7 +29,6 @@ static const struct pwm_dt_spec pwm[3] = { PWM_DT_SPEC_GET(PWM0_NODE), PWM_DT_SP
 #define LED0_NODE DT_ALIAS(led0)
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 int16_t adc_reading[3][16];
-int16_t raw[3][3];
 int16_t map[3][3];
 static const struct adc_sequence_options options = {
     .extra_samplings = 16 - 1,
@@ -42,22 +41,24 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static inline void filter()
+static inline void filter(int* _x, int* _y, int* _total)
 {
-    static float q[9] = { 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 };
-    static float r[9] = { 128, 128, 128, 128, 128, 128, 128, 128, 128 };
-    static float x[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    static float p[9] = { 4095, 4095, 4095, 4095, 4095, 4095, 4095, 4095, 4095 };
-    static float k[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    for (int i = 0; i < 9; i++)
+    static float q[3] = { 0.125, 0.125, 0.125 };
+    static float r[3] = { 32, 32, 32 };
+    static float x[3] = { 0, 0, 1000 };
+    static float v[3] = { 0, 0, 0 };
+    static float p[3] = { 127, 127, 4095 };
+    static float k[3] = { 0, 0, 0 };
+    v[0] = *_x; v[1] = *_y; v[2] = *_total;
+
+    for (int i = 0; i < 3; i++)
     {
-        x[i] = x[i];
-        p[i] = p[i] + q[i];
-        k[i] = p[i] / (p[i] + k[i]);
-        x[i] = x[i] + k[i] * ((float)(raw[i / 3][i % 3]) - x[i]);
-        p[i] = (1 - k[i]) * p[i];
-        map[i / 3][i % 3] = (int16_t)(x[i]);
+        p[i] += q[i];
+        k[i] = p[i] / (p[i] + r[i]);
+        x[i] += k[i] * (v[i] - x[i]);
+        p[i] *= (1 - k[i]);
     }
+    *_x = x[0]; *_y = x[1]; *_total = x[2];
 }
 
 int x_b = 65535, y_b = 65535;
@@ -73,31 +74,29 @@ static int babopad_report_data(const struct device *dev) {
             sequence.buffer = &adc_reading[r][0];
             sequence.channels = BIT(config->adc_channels[r]);
             int err = adc_read(adc, &sequence);
-            raw[c][r] = 0;
+            map[c][r] = 0;
             for (size_t i = 0; i < 16; i++)
             {
-                raw[c][r] += adc_reading[r][i];
+                map[c][r] += adc_reading[r][i];
 
             }
-            raw[c][r] >>= 4;
+            map[c][r] >>= 4;
         }
         pwm_set_dt(&pwm[c], PWM_PERIOD_4MHZ, 0);
         k_sleep(K_USEC(30));
     }
-    filter(raw);
-
 
     //analyse coord:
     //1. get x-mean, y-mean, total value
     int x = map[0][2] + map[1][2] + map[2][2] - map[0][0] - map[1][0] - map[2][0];
     int y = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
-    if (total == 0) return 0;
+    if (total ===)
     x = 128 * x / total;
     y = 128 * y / total;
 
     //2. filter fluctuation
-    //filter(&x, &y, &total);
+    filter(&x, &y, &total);
 
     //3. filter with value threshold
     if (total < 500)
