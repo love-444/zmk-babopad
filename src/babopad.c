@@ -41,7 +41,7 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static inline void filter(int* x, int* y, int* total)
+static inline void filter(int* _x, int* _y, int* _total)
 {
     static float q[3] = { 0.125, 0.125, 0.125 };
     static float r[3] = { 32, 32, 32 };
@@ -49,7 +49,7 @@ static inline void filter(int* x, int* y, int* total)
     static float v[3] = { 0, 0, 0 };
     static float p[3] = { 127, 127, 4095 };
     static float k[3] = { 0, 0, 0 };
-    v[0] = *x; v[1] = *y; v[2] = *total;
+    v[0] = *_x; v[1] = *_y; v[2] = *_total;
 
     for (int i = 0; i < 3; i++)
     {
@@ -58,7 +58,7 @@ static inline void filter(int* x, int* y, int* total)
         x[i] += k[i] * (v[i] - x[i]);
         p[i] *= (1 - k[i]);
     }
-    *x = x[0]; *y = x[1]; *total = x[2];
+    *_x = x[0]; *_y = x[1]; *_total = x[2];
 }
 
 int x_b = 65535, y_b = 65535;
