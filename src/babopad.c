@@ -43,11 +43,11 @@ static struct adc_sequence sequence = {
 
 static inline void filter(int* _x, int* _y, int* _total)
 {
-    static float q[3] = { 0.15, 0.15, 0.25 };
-    static float r[3] = { 12, 12, 32 };
-    static float x[3] = { 0, 0, 1000 };
+    static float q[3] = { 0.5, 0.5, 0.5 };
+    static float r[3] = { 32, 32, 32 };
+    static float x[3] = { 2048, 2048, 1000 };
     static float v[3] = { 0, 0, 0 };
-    static float p[3] = { 127, 127, 4095 };
+    static float p[3] = { 4095, 4095, 4095 };
     static float k[3] = { 0, 0, 0 };
     v[0] = *_x; v[1] = *_y; v[2] = *_total;
 
@@ -94,8 +94,8 @@ static int babopad_report_data(const struct device *dev) {
     filter(&x, &y, &total);
     if (total <= 0) return 0; // error
 
-    x = 128 * x / total;
-    y = 128 * y / total;
+    x = 2047 * x / total + 2048;
+    y = 2047 * y / total + 2048;
     LOG_DBG("%d %d %d", x, y, total);
     if (total <= 800)
     {
@@ -104,7 +104,8 @@ static int babopad_report_data(const struct device *dev) {
         return 0;
     }
 
-    //2. filter fluctuation
+    //2. filter fluctuationr
+    //2. filter fluctuationr
     //3. filter with value threshold
     
     //4. move cursor
@@ -114,8 +115,8 @@ static int babopad_report_data(const struct device *dev) {
         y_b = y;
         return;
     }
-    input_report(dev, config->evt_type, config->input_code_x, 3 * (x - x_b), false, K_FOREVER);
-    input_report(dev, config->evt_type, config->input_code_y, -3 * (y - y_b), true, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_x, (x - x_b) / 32, false, K_FOREVER);
+    input_report(dev, config->evt_type, config->input_code_y, -(y - y_b) / 32, true, K_FOREVER);
     x_b = x;
     y_b = y;
     return 0;
