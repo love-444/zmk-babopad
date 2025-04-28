@@ -41,10 +41,27 @@ static struct adc_sequence sequence = {
     .options = &options,
 };
 
-static int a = 46;
-static int x_b = 65535;
-static int y_b = 65535;
+static inline void filter(int* x, int* y, int* total)
+{
+    static float q[3] = { 0.125, 0.125, 0.125 };
+    static float r[3] = { 32, 32, 32 };
+    static float x[3] = { 0, 0, 1000 };
+    static float v[3] = { 0, 0, 0 };
+    static float p[3] = { 127, 127, 4095 };
+    static float k[3] = { 0, 0, 0 };
+    v[0] = *x; v[1] = *y; v[2] = *total;
 
+    for (int i = 0; i < 3; i++)
+    {
+        p[i] += q[i];
+        k[i] = p[i] / (p[i] + r[i]);
+        x[i] += k[i] * (v[i] - x[i]);
+        p[i] *= (1 - k[i]);
+    }
+    *x = x[0]; *y = x[1]; *total = x[2];
+}
+
+int x_b = 65535, y_b = 65535;
 static int babopad_report_data(const struct device *dev) {
     struct babopad_data *data = dev->data;
     const struct babopad_config *config = dev->config;
