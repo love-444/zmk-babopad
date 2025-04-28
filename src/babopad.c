@@ -92,7 +92,7 @@ static int babopad_report_data(const struct device *dev) {
     int y = map[2][0] + map[2][1] + map[2][2] - map[0][0] - map[0][1] - map[0][2];
     int total = map[0][0] + map[1][0] + map[2][0] + map[0][1] + map[1][1] + map[2][1] + map[0][2] + map[1][2] + map[2][2];
     filter(&x, &y, &total);
-    if (total <= 500)
+    if (total <= 1500)
     {
         x_b = 65535;
         y_b = 65535;
