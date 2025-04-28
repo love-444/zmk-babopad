@@ -43,7 +43,7 @@ static struct adc_sequence sequence = {
 
 static inline void filter(int* x, int* y, int* total)
 {
-    static float q[3] = { 0.125, 0.125, 0.125 };
+    static float q[3] = { 0.25, 0.25, 0.5 };
     static float r[3] = { 32, 32, 32 };
     static float x[3] = { 0, 0, 1000 };
     static float v[3] = { 0, 0, 0 };
